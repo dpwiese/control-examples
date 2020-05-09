@@ -69,14 +69,14 @@ def adaptive_pi_state(_t, x_state, u_input, _params):
     e_i = x_state[2]
 
     # Algebraic relationships
-    e_tracking = x_d - x
-    e_1 = x_d_dot + LAMBDA * e_tracking
-    e_2 = e_tracking + LAMBDA * e_i
+    e = x_d - x
+    e_1 = x_d_dot + LAMBDA * e
+    e_2 = e + LAMBDA * e_i
 
     # Dynamics
     d_j_hat = GAMMA_1 * e_2 * e_1 * IS_ADAPTIVE
     d_b_hat = GAMMA_2 * e_2 * x * IS_ADAPTIVE
-    e_i_dot = e_tracking
+    e_i_dot = e
 
     return [d_j_hat, d_b_hat, e_i_dot]
 
@@ -94,9 +94,9 @@ def adaptive_pi_output(_t, x_state, u_input, _params):
     e_i = x_state[2]
 
     # Algebraic relationships
-    e_tracking = x_d - x
-    e_1 = x_d_dot + LAMBDA * e_tracking
-    e_2 = e_tracking + LAMBDA * e_i
+    e = x_d - x
+    e_1 = x_d_dot + LAMBDA * e
+    e_2 = e + LAMBDA * e_i
 
     # Control law
     u = j_hat * e_1 + b_hat * x + K * e_2
