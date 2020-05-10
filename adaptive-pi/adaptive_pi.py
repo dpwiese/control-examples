@@ -37,8 +37,8 @@ GAMMA_1 = 1
 GAMMA_2 = 1
 
 # Initial parameter estimates
-J_HAT_0 = 0.1
-B_HAT_0 = 2
+J_HAT_0 = 5
+B_HAT_0 = 0.1
 
 # Flag to disable adaptive control
 IS_ADAPTIVE = 1
@@ -125,7 +125,7 @@ IO_CLOSED = control.InterconnectedSystem(
         ('control.u[2]', 'plant.x')
     ),
     inplist=('control.u[0]', 'control.u[1]'),
-    outlist=('plant.x', 'control.j_hat', 'control.b_hat'),
+    outlist=('plant.x', 'control.j_hat', 'control.b_hat', 'control.u'),
     dt=0
 )
 
@@ -151,13 +151,36 @@ U[1, :] = XD_DOT_IN
 T_OUT, Y_OUT = control.input_output_response(IO_CLOSED, T, U, X0)
 
 # Plot the response
-plt.figure(1)
-plt.subplot(2, 1, 1)
-plt.plot(T, XD_IN)
-plt.plot(T_OUT, Y_OUT[0])
-plt.legend(['x_d', 'x'])
-plt.subplot(2, 1, 2)
-plt.plot(T_OUT, Y_OUT[1])
-plt.plot(T_OUT, Y_OUT[2])
-plt.legend(['j_hat', 'b_hat'])
-plt.show(block=True)
+plt.rc('text', usetex=True)
+plt.rc('font', family='sans')
+
+FIG = plt.figure(1, figsize=(6, 6), dpi=300, facecolor='w', edgecolor='k')
+
+RED = '#f62d73'
+BLUE = '#1269d3'
+WHITE = '#ffffff'
+
+AX_1 = FIG.add_subplot(3, 1, 1)
+AX_1.plot(T, XD_IN, label=r'$x_{d}$', color=RED)
+AX_1.plot(T_OUT, Y_OUT[0], label=r'$x$', color=BLUE)
+AX_1.set_ylabel('Motor Velocity')
+AX_1.set_xlabel(r'time ($t$)', fontname="Times New Roman", fontsize=9, fontweight=100)
+AX_1.legend(loc="lower right", bbox_to_anchor=(1, 0), fontsize=9)
+AX_1.set_facecolor(WHITE)
+
+AX_2 = FIG.add_subplot(3, 1, 2)
+AX_2.plot(T_OUT, Y_OUT[1], label=r'$\hat{J}$', color=RED)
+AX_2.plot(T_OUT, Y_OUT[2], label=r'$\hat{B}$', color=BLUE)
+AX_2.set_ylabel('Parameter Estimates')
+AX_2.set_xlabel(r'time ($t$)', fontname="Times New Roman", fontsize=9, fontweight=100)
+AX_2.legend(loc="lower right", bbox_to_anchor=(1, 0), fontsize=9)
+AX_2.set_facecolor(WHITE)
+
+AX_3 = FIG.add_subplot(3, 1, 3)
+AX_3.plot(T_OUT, Y_OUT[3], label=r'$u$', color=BLUE)
+AX_3.set_ylabel('Control Effort')
+AX_3.set_xlabel(r'time ($t$)', fontname="Times New Roman", fontsize=9, fontweight=100)
+AX_3.legend(loc="lower right", bbox_to_anchor=(1, 0), fontsize=9)
+AX_3.set_facecolor(WHITE)
+
+FIG.savefig('adaptive_pi.png', bbox_inches='tight')
