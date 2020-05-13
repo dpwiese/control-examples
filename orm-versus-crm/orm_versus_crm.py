@@ -152,7 +152,7 @@ WHITE = '#ffffff'
 GREEN = '#2df643'
 
 AX_1 = FIG.add_subplot(1, 2, 1)
-AX_1.plot(T_OUT, R_IN, label=r'$x_m$', color=RED)
+AX_1.plot(T_OUT, R_IN, label=r'$r$', color=RED)
 AX_1.plot(T_OUT, Y_OUT[1], label=r'$x_m$', color=BLUE)
 AX_1.plot(T_OUT, Y_OUT[0], label=r'$x_p$', color=GREEN)
 AX_1.set_title('Plant and Reference Model States')
