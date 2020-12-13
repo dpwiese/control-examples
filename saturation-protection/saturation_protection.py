@@ -4,6 +4,7 @@ Saturation protection
 Adaptive Control in the Presence of Input Constraints
 S.P. Karason ; A.M. Annaswamy
 https://doi.org/10.23919/ACC.1993.4793095
+https://doi.org/10.1109/9.333787
 """
 
 import control
@@ -44,7 +45,7 @@ U_MAX = 10
 
 # Gains
 GAMMA_1 = 0.1
-GAMMA_2 = 0.5
+GAMMA_2 = 0.1
 GAMMA_3 = 1
 
 # Define plant
@@ -95,6 +96,12 @@ def adaptive_state(_t, x_state, u_input, _params): # pylint: disable=too-many-lo
 
     # Dynamics: error state
     dot_e_delta = A_M * e_delta + beta_delta * delta_u
+
+    # # Uncomment me to revert to standard adaptive system
+    # dot_theta = -GAMMA_1 * np.sign(B_P) * e * x_p
+    # dot_k = -GAMMA_2 * np.sign(B_P) * e * r
+    # dot_beta_delta = 0
+    # dot_e_delta = 0
 
     return [dot_theta, dot_k, dot_beta_delta, dot_e_delta]
 
