@@ -169,4 +169,4 @@ AX_2.legend(loc="lower right", bbox_to_anchor=(1, 0), fontsize=9)
 AX_2.set_facecolor(WHITE)
 
 FIG.tight_layout(rect=[0, 0.03, 1, 0.95])
-FIG.savefig('orm_versus_crm_gamma_' + str(GAMMA) + '_ell_' + str(-L) + '.png', bbox_inches='tight')
+FIG.savefig('fig/orm_versus_crm_gamma_' + str(GAMMA) + '_ell_' + str(-L) + '.png', bbox_inches='tight')

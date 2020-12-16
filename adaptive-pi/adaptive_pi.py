@@ -183,4 +183,4 @@ AX_3.set_xlabel(r'time ($t$)', fontname="Times New Roman", fontsize=9, fontweigh
 AX_3.legend(loc="lower right", bbox_to_anchor=(1, 0), fontsize=9)
 AX_3.set_facecolor(WHITE)
 
-FIG.savefig('adaptive_pi.png', bbox_inches='tight')
+FIG.savefig('fig/adaptive_pi.png', bbox_inches='tight')

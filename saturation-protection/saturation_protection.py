@@ -254,5 +254,5 @@ FIG_1.tight_layout(rect=[0, 0.03, 1, 0.95])
 FIG_2.tight_layout(rect=[0, 0.03, 1, 0.95])
 
 # Save figures
-FIG_1.savefig('saturation_protection_state_input.png', bbox_inches='tight')
-FIG_2.savefig('saturation_protection_errors.png', bbox_inches='tight')
+FIG_1.savefig('fig/saturation_protection_state_input.png', bbox_inches='tight')
+FIG_2.savefig('fig/saturation_protection_errors.png', bbox_inches='tight')
