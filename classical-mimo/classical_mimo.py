@@ -158,7 +158,7 @@ IO_ADAPTIVE = control.NonlinearIOSystem(
 )
 
 # Define the closed-loop system
-# x_cl = [plant[5], reference[2], input-filter[4], output_filter[4], controller[12]]
+# x_cl = [plant[5], reference[2], input_filter[4], output_filter[4], controller[12]]
 IO_CLOSED = control.InterconnectedSystem(
     (IO_PLANT, IO_REF_MODEL, IO_INPUT_FILTER, IO_OUTPUT_FILTER, IO_ADAPTIVE),
     connections=(
@@ -227,9 +227,8 @@ BLUE = '#1269d3'
 WHITE = '#ffffff'
 GREEN = '#2df643'
 
-# Make figures
+# Make figure
 FIG_1 = plt.figure(1, figsize=(6, 6), dpi=300, facecolor='w', edgecolor='k')
-
 
 AX_1_1 = FIG_1.add_subplot(2, 1, 1)
 AX_1_1.plot(T_OUT, R_IN_1, label=r'$r_{1}$', color=RED)
@@ -249,9 +248,8 @@ AX_1_2.set_xlabel(r'time ($t$)', fontname="Times New Roman", fontsize=9, fontwei
 AX_1_2.legend(loc="upper right", bbox_to_anchor=(1, 1), fontsize=9)
 AX_1_2.set_facecolor(WHITE)
 
-# Format figures
+# Format figure
 FIG_1.tight_layout(rect=[0, 0.03, 1, 0.95])
-# FIG_2.tight_layout(rect=[0, 0.03, 1, 0.95])
 
 # Save figures
-FIG_1.savefig('classical_mimo_output.png', bbox_inches='tight')
+FIG_1.savefig('fig/classical_mimo_output.png', bbox_inches='tight')
