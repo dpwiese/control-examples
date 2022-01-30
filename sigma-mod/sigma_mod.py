@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 # input: [u, v]
 # state: x_p
 # output: x_p
-A_P = 4
+A_P = 1
 B_P = np.array([1, 1])
 C_P = 1
 D_P = 0
@@ -33,7 +33,7 @@ D_M = 0
 
 # Control parameters
 SIGMA = 1
-V = 10
+V = 5
 
 # Initial conditions: error
 THETA_TILDE_0 = 5
@@ -176,6 +176,7 @@ AX_3.set_title('Errors')
 AX_3.set_ylabel(r'$\tilde{\theta}$')
 AX_3.set_xlabel(r'$e$', fontname="Times New Roman", fontsize=9, fontweight=100)
 AX_3.set_facecolor(WHITE)
+AX_3.set_xlim([-10, 10])
 
 FIG.tight_layout()
 FIG.savefig('sigma_mod.png', bbox_inches='tight')
