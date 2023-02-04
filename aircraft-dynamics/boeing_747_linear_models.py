@@ -16,10 +16,11 @@ G = 32.3
 # Equlibrium flight condition [ft/s]
 MACH = 0.9
 U_EQ = 871
-GAMMA_EQ = 0
-W_EQ = 0
-ALPHA_EQ = 0
 V_EQ = U_EQ
+W_EQ = 0
+GAMMA_EQ = 0
+ALPHA_EQ = 0
+THETA_EQ = 0
 
 # Weight and other parameters
 # Moments of inertia [slug-ft^2]
@@ -89,7 +90,12 @@ N_R = -0.1465
 N_D_A = 0.0097
 N_D_R = -0.4439
 
-# Longitudinal matrices
+# Calculate
+Y_BETA = Y_V * V_EQ
+L_BETA = L_V * V_EQ
+N_BETA = N_V * V_EQ
+
+# Longitudinal matrices in general body-fixed axes
 E_P_LONG = np.array([
     [1, 0, 0, 0],
     [0, 1 - Z_W_DOT, 0, 0],
@@ -97,8 +103,8 @@ E_P_LONG = np.array([
     [0, 0, 0,1]])
 
 A_P_PRIME_LONG = np.array([
-    [X_U, X_W, X_Q - W_EQ, -G * np.cos(GAMMA_EQ)],
-    [Z_U, Z_W, Z_Q + U_EQ, -G * np.sin(GAMMA_EQ)],
+    [X_U, X_W, X_Q - W_EQ, -G * np.cos(THETA_EQ)],
+    [Z_U, Z_W, Z_Q + U_EQ, -G * np.sin(THETA_EQ)],
     [M_U, M_W, M_Q, 0],
     [0, 0, 1, 0]])
 
@@ -108,7 +114,7 @@ B_P_PRIME_LONG = np.array([
     [M_D_TH, M_D_E],
     [0, 0]])
 
-# Lateral-directional matrices
+# Lateral-directional matrices in general body-fixed axes
 E_P_LATR = np.array([
     [1, 0, 0, 0],
     [0, 1, -J_XZ / J_XX, 0],
@@ -116,7 +122,7 @@ E_P_LATR = np.array([
     [0, 0, 0, 1]])
 
 A_P_PRIME_LATR = np.array([
-    [Y_V, Y_P, Y_R - U_EQ, -G * np.cos(GAMMA_EQ)],
+    [Y_V, Y_P, Y_R - U_EQ, -G * np.cos(THETA_EQ)],
     [L_V, L_P, L_R, 0],
     [N_V, N_P, N_R, 0],
     [0, 1, 0, 0]])
@@ -256,7 +262,7 @@ def boeing_747_linear_longitudinal_stability_5():
 
     return [a_p, b_p, c_p, d_p, c_pz, d_pz]
 
-def boeing_747_linear_lateral_5():
+def boeing_747_linear_lateral_body_5():
     """
     Boeing 747 lateral-directional dynamics
     Input: [aileron, rudder]
@@ -284,3 +290,109 @@ def boeing_747_linear_lateral_5():
     d_pz = np.zeros((1,1))
 
     return [a_p, b_p, c_p, d_p, c_pz, d_pz]
+
+def boeing_747_linear_lateral_stability_5():
+    """
+    Boeing 747 lateral-directional dynamics
+    Input: [aileron, rudder]
+    State: [beta, p, r, phi, psi]
+    Output: [beta, p, r, phi, psi]
+    """
+
+    a_p = np.array([
+        [Y_BETA / V_EQ, Y_P / V_EQ, Y_R / V_EQ - 1, -G * np.cos(THETA_EQ) / V_EQ, 0],
+        [L_BETA, L_P, L_R, 0, 0],
+        [N_BETA, N_P, N_R, 0, 0],
+        [0, 1, 0, 0, 0],
+        [0, 0, 1, 0, 0]])
+
+    b_p = np.array([
+        [Y_D_A / V_EQ, Y_D_R / V_EQ],
+        [L_D_A, L_D_R],
+        [N_D_A, N_D_R],
+        [0, 0],
+        [0, 0]])
+
+    c_p = np.identity(5)
+    d_p = np.zeros((5,2))
+
+    c_pz = np.array([
+        [0, 1, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 1]])
+    d_pz = np.zeros((4,2))
+
+    return [a_p, b_p, c_p, d_p, c_pz, d_pz]
+
+A_P, B_P, C_P, D_P, C_PZ, D_PZ = boeing_747_linear_longitudinal_stability_5()
+
+# Define plant
+IO_PLANT = control.LinearIOSystem(
+    control.StateSpace(A_P, B_P, C_P, D_P),
+    inputs=2,
+    outputs=5,
+    states=5,
+    name='plant'
+)
+
+# Set simulation duration and time steps
+N_POINTS = 6000
+T_F = 1000
+
+# Set initial conditions
+X0 = [[0], [2 * np.pi / 180], [0], [0], [0]]
+
+# Define simulation time span and control input
+T = np.linspace(0, T_F, N_POINTS)
+U = np.zeros((2, N_POINTS))
+
+# Simulate the system
+T_OUT, Y_OUT = control.input_output_response(IO_PLANT, T, U, X0)
+
+# Plot the response
+plt.rc('text', usetex=True)
+plt.rc('font', family='sans')
+
+# Define plot styles
+RED = '#f62d73'
+BLUE = '#1269d3'
+WHITE = '#ffffff'
+GREEN = '#2df643'
+ORANGE = '#ffa500'
+PURPLE = '#da70d6'
+GREY = '#444444'
+
+# Make figure
+FIG_1 = plt.figure(1, figsize=(6, 9), dpi=300, facecolor='w', edgecolor='k')
+
+AX_1_1 = FIG_1.add_subplot(3, 1, 1)
+AX_1_1.plot(T_OUT, Y_OUT[1], label=r'$\alpha$', color=RED)
+AX_1_1.plot(T_OUT, Y_OUT[2], label=r'$q$', color=BLUE)
+AX_1_1.plot(T_OUT, Y_OUT[3], label=r'$\theta$', color=GREEN)
+AX_1_1.set_title('Aircraft State')
+AX_1_1.set_xlabel(r'time ($t$)', fontname="Times New Roman", fontsize=9, fontweight=100)
+AX_1_1.legend(loc="upper right", bbox_to_anchor=(1, 1), fontsize=9)
+AX_1_1.set_facecolor(WHITE)
+
+AX_1_2 = FIG_1.add_subplot(3, 1, 2)
+AX_1_2.plot(T_OUT, Y_OUT[0], label=r'$V_{T}$', color=ORANGE)
+AX_1_2.plot(T_OUT, Y_OUT[4], label=r'$h$', color=PURPLE)
+AX_1_2.set_title('Aircraft State')
+AX_1_2.set_xlabel(r'time ($t$)', fontname="Times New Roman", fontsize=9, fontweight=100)
+AX_1_2.legend(loc="upper right", bbox_to_anchor=(1, 1), fontsize=9)
+AX_1_2.set_facecolor(WHITE)
+
+AX_1_3 = FIG_1.add_subplot(3, 1, 3)
+AX_1_3.plot(T_OUT, U[0], label=r'$\delta_{e}$', color=GREY)
+AX_1_3.plot(T_OUT, U[1], label=r'$\delta_{e}$', color=RED)
+AX_1_3.set_title('Control Input')
+AX_1_3.set_xlabel(r'time ($t$)', fontname="Times New Roman", fontsize=9, fontweight=100)
+AX_1_3.legend(loc="upper right", bbox_to_anchor=(1, 1), fontsize=9)
+AX_1_3.set_facecolor(WHITE)
+
+# Format figure
+FIG_1.tight_layout(rect=[0, 0.03, 1, 0.95])
+
+# Save figures
+FIG_1.savefig('fig/boeing_747_linear_longitudinal.png', bbox_inches='tight')

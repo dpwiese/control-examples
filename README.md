@@ -2,6 +2,7 @@
 
 This repository contains some adaptive control examples using the [Python Control Systems Library](https://github.com/python-control/python-control).
 The blog post [Adaptive PI Control with Python](https://danielwiese.com/posts/adaptive-pi-python/) walks through an example and might be helpful.
+The blog post [Linear Aircraft Models](https://danielwiese.com/posts/linear-aircraft-models/) describes the models contained in the `aircraft-dynamics` directory.
 To get started check out the Python Control Systems Library [documentation](https://python-control.readthedocs.io/en/0.8.3/index.html).
 
 ## Using
@@ -63,7 +64,7 @@ PATH="/Applications/CMake.app/Contents/bin":"$PATH"
 
 ### Slycot
 
-A first attempt to install [Slycot](https://github.com/python-control/Slycot) with the following command failed.
+Install [Slycot](https://github.com/python-control/Slycot) with the following command.
 
 ```sh
 pip3 install slycot
@@ -73,7 +74,7 @@ The following section describes the couple errors I encountered during installat
 
 #### Installation Errors
 
-The following errors were the resulting of following the same steps to install Slycot on a different environment (M1 Macbook, MacOS Monterey).
+The first error I encountered during installation was.
 
 ```
 ERROR: Could not build wheels for scipy which use PEP 517 and cannot be installed directly
@@ -118,7 +119,8 @@ pip3 install control
 
 #### Installation Errors on Previous Python Version
 
-resulted in the error:
+This section contains some errors I had encountered previously when installing dependencies.
+Attempting to install Slycot resulted in the error:
 
 ```
 AttributeError: module 'enum' has no attribute 'IntFlag'?
