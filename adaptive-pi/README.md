@@ -5,5 +5,5 @@ A small writeup on the controller implemented in this code is available at [http
 A DC motor with unknown damping and inertia is regulated to achieve the desired motor velocity, as shown in the plot below.
 
 <p align="center">
-  <img src="https://github.com/dpwiese/control-examples/blob/main/adaptive-pi/adaptive_pi.png?raw=true" width="400">
+  <img src="https://github.com/dpwiese/control-examples/blob/main/adaptive-pi/adaptive_pi.png?raw=true" width="600">
 </p>
