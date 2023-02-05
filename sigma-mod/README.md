@@ -5,5 +5,5 @@ In the presence of a constant input bias, the "standard" adaptive law will cause
 The use of sigma modification shown here prevents this from happening, although it doesn't provide convergence of the tracking error to zero.
 
 <p align="center">
-  <img src="https://github.com/dpwiese/control-examples/blob/main/sigma-mod/fig/sigma_mod.png?raw=true" width="400">
+  <img src="https://github.com/dpwiese/control-examples/blob/main/sigma-mod/fig/sigma_mod.png?raw=true" width="600">
 </p>
