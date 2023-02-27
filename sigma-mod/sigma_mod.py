@@ -6,7 +6,7 @@ parameter estimate to grow unbounded. The use of sigma modification shown here p
 this from happening, although it doesn't provide convergence of the tracking error to
 zero.
 
-See Stable Adaptive Systems Anuradha M. Annaswamy and Kumpati S. Narendra, 2005 (page 310)
+See Stable Adaptive Systems Anuradha M. Annaswamy and Kumpati S. Narendra, 2005 (page 310)
 """
 
 import control
