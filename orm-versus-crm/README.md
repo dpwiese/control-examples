@@ -24,5 +24,9 @@ The plots below show how changing the adaptive gain `GAMMA` and closed-loop refe
 </p>
 
 <p align="center">
+  <img src="https://github.com/dpwiese/control-examples/blob/main/orm-versus-crm/fig/orm_versus_crm_gamma_10_ell_10.png?raw=true" width="600">
+</p>
+
+<p align="center">
   <img src="https://github.com/dpwiese/control-examples/blob/main/orm-versus-crm/fig/orm_versus_crm_gamma_1_ell_0.png?raw=true" width="600">
 </p>
